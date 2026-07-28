@@ -26,3 +26,14 @@ def get_outcome_label(
 
     return int(is_correct)
 
+
+def test_get_outcome_label() -> None:
+    assert get_outcome_label("3", "3") == 1
+    assert get_outcome_label("4", "3") == 0
+    assert get_outcome_label("40,000", "40,\\!000") == 1
+
+
+print(get_outcome_label('3', '3'))
+print(get_outcome_label('4', '3'))
+print(get_outcome_label('40,000', '40,\\\\!000'))
+test_get_outcome_label()
