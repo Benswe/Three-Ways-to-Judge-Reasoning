@@ -1,0 +1,86 @@
+{
+  "builder_name": "json",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "json",
+  "dataset_size": 353902577,
+  "description": "",
+  "download_checksums": {
+    "https://github.com/openai/prm800k/raw/refs/heads/main/prm800k/data/phase2_train.jsonl": {
+      "num_bytes": 456135365,
+      "checksum": null
+    },
+    "https://github.com/openai/prm800k/raw/refs/heads/main/prm800k/data/phase2_test.jsonl": {
+      "num_bytes": 12240719,
+      "checksum": null
+    }
+  },
+  "download_size": 468376084,
+  "features": {
+    "generation": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "problem_id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "trace_id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "problem": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "ground_truth_answer": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "generated_answer": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "steps": {
+      "feature": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "step_ratings": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "finish_reason": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 822278661,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 344738413,
+      "num_examples": 97782,
+      "dataset_name": "json"
+    },
+    "test": {
+      "name": "test",
+      "num_bytes": 9164164,
+      "num_examples": 2762,
+      "dataset_name": "json"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}

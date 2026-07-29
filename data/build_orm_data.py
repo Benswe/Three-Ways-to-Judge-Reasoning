@@ -26,14 +26,56 @@ def get_outcome_label(
 
     return int(is_correct)
 
+def format_orm_text(
+        problem: str,
+        steps: list[str],
+        generated_answer: str
+):
+    """Format one complete reasonign trace for the ORM"""
+    formatted_steps = "\n".join(
+        f"Step {step_index}: {step.strip()}"
+        for step_index, step in enumerate(steps, start=1)
+    )
+    # orm needs a string because a transformer receives a sequence of tokens
+    return (
+        f"Problem:\n{problem.strip()}\n\n"
+        f"Solution:\n{formatted_steps}\n\n"
+        f"Final answer:\n{generated_answer.strip()}"
+    )
 
-def test_get_outcome_label() -> None:
-    assert get_outcome_label("3", "3") == 1
-    assert get_outcome_label("4", "3") == 0
-    assert get_outcome_label("40,000", "40,\\!000") == 1
+
+def build_orm_example(
+        example: dict[str, Any],
+) -> dict[str, Any]:
+    """Convert one normalized reasoning trace into an ORM example."""
+
+    text = format_orm_text(
+        problem=example["problem"],
+        steps=example["steps"],
+        generated_answer=example["generated_answer"],
+    )
+
+    label = get_outcome_label(
+        generated_answer=example["generated_answer"],
+        ground_truth_answer=example["ground_truth_answer"],
+    )
 
 
-print(get_outcome_label('3', '3'))
-print(get_outcome_label('4', '3'))
-print(get_outcome_label('40,000', '40,\\\\!000'))
-test_get_outcome_label()
+    return {
+        "problem_id": example["problem_id"],
+        "trace_id": example["trace_id"],
+        "text": text,
+        "label": label,
+        "generated_answer": example["generated_answer"],
+        "ground_truth_answer": example["ground_truth_answer"],
+        "finish_reason": example["finish_reason"],
+        "generation": example.get("generation"),
+    }
+
+def build_orm_dataset(
+        dataset: DatasetDict,
+        num_proc: int | None = None,
+) -> DatasetDict:
+    """Convert a normalized reasoning dataset into an ORM dataset."""
+    
+
