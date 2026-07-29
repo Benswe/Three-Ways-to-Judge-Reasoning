@@ -77,5 +77,40 @@ def build_orm_dataset(
         num_proc: int | None = None,
 ) -> DatasetDict:
     """Convert a normalized reasoning dataset into an ORM dataset."""
-    
 
+    # for different splits (train, test)
+    orm_dataset = DatasetDict()
+    # take normalized reasoning traces, turn them into formatted text + outcome labels
+    for split_name, split_dataset in dataset.items():
+        original_columns = split_dataset.column_names
+        orm_split = split_dataset.map(
+            build_orm_example,
+            remove_columns=original_columns,
+            num_proc=num_proc,
+            desc=f"Building ORM {split_name}",
+        )
+
+
+        orm_dataset[split_name] = orm_split
+    
+    return orm_dataset
+
+
+
+if __name__ == "__main__":
+    dataset = load_from_disk(
+    "data/processed/prm800k_phase2"
+)
+    small_dataset = DatasetDict({
+        "train": dataset["train"].select(range(10)),
+        "test": dataset["test"].select(range(5)),
+    })
+
+    orm_dataset = build_orm_dataset(small_dataset)
+
+    print(orm_dataset)
+    print(json.dumps(
+        orm_dataset["train"][0],
+        indent=2,
+        ensure_ascii=False,
+    ))
